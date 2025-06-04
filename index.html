@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="title">Welcome to Tic-tac-toe!</div>
+    <div class="container"></div>
+    <button class="resetGame">Reset Game!</button>
+    <script>
+        resetGame()
+
+        const resetGamebtn = document.querySelector(".resetGame");
+        resetGamebtn.addEventListener("click", clearGameField);
+        resetGamebtn.addEventListener("click", resetGame);
+
+        function resetGame() {
+        const container = document.querySelector(".container")
+        let boxCount = 1;
+
+        function creatingBox() {
+            const box = document.createElement("div");
+            container.append(box);
+            box.id = 'box-' + boxCount;
+            boxCount++;
+        }
+
+        for (let i=0; i<9; i++) {
+            creatingBox();
+        }
+
+        //Set variables
+        let boxArray = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        let rounds = 0;
+        // let computerRounds = 0;
+        let humanRounds = 0;
+        let humanSelectedBox = [];
+        let computerSelectedBox = [];
+        let comupterMaxNum = 9;
+        let computerMoveTimeoutId = null; // <<< Store the timeout ID here
+
+        //Keep track of rounds
+        const selectionBoxes = document.querySelectorAll(".container > div");
+        selectionBoxes.forEach(selectionBox => {
+            selectionBox.addEventListener("click", () => {
+                selectionBox.style.backgroundColor = "#F07818";
+                selectionBox.append("O");
+                selectionBox.style.pointerEvents = "none";
+            });
+            selectionBox.addEventListener("click", subtractingTheArray);
+            selectionBox.addEventListener("click", () => {
+                rounds += 1;
+                console.log(rounds);
+                comupterMaxNum -= 1;
+                if (checkResultHuman(humanSelectedBox)) { // checkResultHuman now needs to return true on win
+                    return; // Stop processing if human won and game is resetting
+                }
+
+                if (computerMoveTimeoutId) {
+                        clearTimeout(computerMoveTimeoutId);
+                }
+
+                computerMoveTimeoutId = setTimeout(() => {
+                    computerMove();
+                    checkResultComputer(computerSelectedBox);
+                }, 1000);
+            });
+        });
+
+        function checkResultHuman(arr) {
+            if ((arr.includes(1) && arr.includes(2) && arr.includes(3)) ||
+                    (arr.includes(4) && arr.includes(5) && arr.includes(6)) ||
+                    (arr.includes(7) && arr.includes(8) && arr.includes(9)) ||
+                    (arr.includes(1) && arr.includes(4) && arr.includes(7)) ||
+                    (arr.includes(2) && arr.includes(5) && arr.includes(8)) ||
+                    (arr.includes(3) && arr.includes(6) && arr.includes(9)) ||
+                    (arr.includes(1) && arr.includes(5) && arr.includes(9)) ||
+                    (arr.includes(3) && arr.includes(5) && arr.includes(7))) {
+
+                    if (computerMoveTimeoutId) { // <<< Clear pending computer move
+                        clearTimeout(computerMoveTimeoutId);
+                        computerMoveTimeoutId = null; // Reset the ID
+                    }
+
+                    setTimeout(() => { // Delay alert slightly to let UI update
+                        alert("You win!");
+                        clearGameField();
+                        resetGame();
+                    }, 1000);
+                    return true;
+                    }
+                return false;
+        };
+
+        function checkResultComputer(arr) {
+                // ... (your existing win check logic)
+                if ((arr.includes(1) && arr.includes(2) && arr.includes(3)) ||
+                    (arr.includes(4) && arr.includes(5) && arr.includes(6)) ||
+                    (arr.includes(7) && arr.includes(8) && arr.includes(9)) ||
+                    (arr.includes(1) && arr.includes(4) && arr.includes(7)) ||
+                    (arr.includes(2) && arr.includes(5) && arr.includes(8)) ||
+                    (arr.includes(3) && arr.includes(6) && arr.includes(9)) ||
+                    (arr.includes(1) && arr.includes(5) && arr.includes(9)) ||
+                    (arr.includes(3) && arr.includes(5) && arr.includes(7))) {
+                    setTimeout(() => { // Delay alert slightly
+                        alert("Computer wins!");
+                        clearGameField();
+                        resetGame();
+                    }, 20);
+                    return true;
+                }
+                return false;
+            }
+
+        function subtractingTheArray(event) {
+		  const clickedDiv = this.id;
+          const boxNum = Number(clickedDiv.substr(4, 1));
+          humanSelectedBox.push(boxNum);
+          let arrayPosition = boxArray.indexOf(boxNum);
+          boxArray.splice(arrayPosition, 1);
+          console.log(boxArray);
+	    }
+
+        function computerMove() {
+            let randomNum = Math.floor(Math.random() * comupterMaxNum);
+                //console.log(randomNum);
+
+                let currentPosition = boxArray[randomNum];
+                //console.log(currentPosition);
+
+                //Add style to the box after clicking
+                const selectBox = document.querySelector(`#box-${currentPosition}`);
+                selectBox.style.backgroundColor = "#5E412F";
+                selectBox.style.pointerEvents = "none";
+                selectBox.append("X");
+                computerSelectedBox.push(currentPosition);
+                console.log(computerSelectedBox);
+
+                boxArray.splice(randomNum, 1);
+
+
+                rounds += 1;
+                comupterMaxNum -= 1;
+                console.log(rounds)
+        }
+        }
+        function clearGameField() {
+            const box = document.querySelectorAll(".container > div")
+            box.forEach(box => {
+            box.remove()
+            })
+        }
+    </script>
+</body>
+</html>
