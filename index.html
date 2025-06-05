@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="outer-container">
     <div class="title">Welcome to Tic-tac-toe!</div>
     <div class="container"></div>
     <button class="resetGame">Reset Game!</button>
+    </div>
     <script>
-        resetGame()
+        resetGame();
 
         const resetGamebtn = document.querySelector(".resetGame");
         resetGamebtn.addEventListener("click", clearGameField);
@@ -121,7 +123,6 @@
           humanSelectedBox.push(boxNum);
           let arrayPosition = boxArray.indexOf(boxNum);
           boxArray.splice(arrayPosition, 1);
-          console.log(boxArray);
 	    }
 
         function computerMove() {
