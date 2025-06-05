@@ -1,29 +1,46 @@
+* {
+  background-color: antiquewhite;
+}
+
+.outer-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 400px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 10px;
-  width: 400px;
+  width: 500px;
+  justify-content: center;
 }
 
 .container > div {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   background-color: #78c0a8;
   text-align: center;
   vertical-align: middle;
-  line-height: 100px;
+  line-height: 150px;
   color: white;
-  font-size: 40px;
+  font-size: 55px;
 }
 
 .title {
-    font-size: 30px;
-    margin-bottom: 10px;
+    font-size: 40px;
+    margin-bottom: 40px;
+    text-align: center;
 }
 
 .resetGame {
-    width: 150px;
+    width: 300px;
+    height: 30px;
     margin-top: 20px;
-
+    background-color: beige;
 }
